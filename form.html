@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trackto — Falar com o time</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{ --accent:#D7FF3D; }
+  body{margin:0;background:#FAF9F6;font-family:'IBM Plex Sans',sans-serif;color:#161810;}
+  *{box-sizing:border-box;}
+  a{color:inherit;text-decoration:none;}
+  .fq-input{width:100%;border:none;border-bottom:2px solid #E2DED0;background:transparent;font-family:'IBM Plex Sans',sans-serif;font-size:26px;padding:10px 2px;outline:none;color:#161810;}
+  .fq-input:focus{border-bottom-color:#161810;}
+  .fq-input::placeholder{color:#C4C0B2;}
+  .fq-step{animation:fqIn .4s cubic-bezier(.16,1,.3,1) both;}
+  @keyframes fqIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.fq-step{animation:none;}}
+  @media (max-width:640px){.fq-input{font-size:21px;}.fq-question{font-size:24px !important;}}
+  [data-step]{display:none;}
+  [data-step].active{display:block;}
+  button:disabled{opacity:.4;cursor:not-allowed;}
+</style>
+</head>
+<body>
+
+<div style="width:100%;min-height:100vh;background:#FAF9F6;display:flex;flex-direction:column;">
+
+  <!-- topo: fechar + progresso -->
+  <div style="max-width:640px;width:100%;margin:0 auto;padding:28px 24px 0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+      <a href="index.html" aria-label="Voltar pro site" style="width:34px;height:34px;border-radius:9px;background:#F0EEE5;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 4L4 12M4 4L12 12" stroke="#161810" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </a>
+      <span id="stepLabel" style="font-size:13px;color:#9A978A;">1 de 5</span>
+    </div>
+    <div style="height:4px;background:#EFEDE4;border-radius:999px;overflow:hidden;">
+      <div id="progressBar" style="height:100%;border-radius:999px;transition:width .35s ease;width:20%;background:var(--accent);"></div>
+    </div>
+  </div>
+
+  <!-- conteúdo -->
+  <div style="flex:1;display:flex;align-items:center;">
+    <div style="max-width:640px;width:100%;margin:0 auto;padding:56px 24px;">
+
+      <div class="fq-step" data-step="0">
+        <p class="fq-question" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 28px;">Qual é o seu nome?</p>
+        <input class="fq-input" data-field="nome" type="text" placeholder="Digite aqui..." autofocus>
+      </div>
+
+      <div class="fq-step" data-step="1">
+        <p class="fq-question" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 28px;">Qual o seu melhor e-mail, <span id="firstNameOut1">tudo bem</span>?</p>
+        <input class="fq-input" data-field="email" type="email" placeholder="voce@agencia.com.br">
+      </div>
+
+      <div class="fq-step" data-step="2">
+        <p class="fq-question" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 28px;">Qual o nome da sua agência?</p>
+        <input class="fq-input" data-field="agencia" type="text" placeholder="Nome da agência">
+      </div>
+
+      <div class="fq-step" data-step="3">
+        <p class="fq-question" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 28px;">Quantas contas ativas vocês gerenciam hoje?</p>
+        <input class="fq-input" data-field="contas" type="text" inputmode="numeric" placeholder="Ex: 12">
+      </div>
+
+      <div class="fq-step" data-step="4">
+        <p class="fq-question" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 10px;">Qual o seu WhatsApp?</p>
+        <p style="font-size:14px;color:#9A978A;margin:0 0 22px;">Opcional — é só se quiser agilizar o contato.</p>
+        <input class="fq-input" data-field="whatsapp" type="tel" placeholder="(00) 00000-0000">
+      </div>
+
+      <div class="fq-step" data-step="5">
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;letter-spacing:-0.01em;margin:0 0 26px;">Confere se tá tudo certo:</p>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #E7E3D9;padding-bottom:10px;"><span style="font-size:13px;color:#9A978A;">Nome</span><span id="reviewNome" style="font-size:15px;font-weight:500;">—</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #E7E3D9;padding-bottom:10px;"><span style="font-size:13px;color:#9A978A;">E-mail</span><span id="reviewEmail" style="font-size:15px;font-weight:500;">—</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #E7E3D9;padding-bottom:10px;"><span style="font-size:13px;color:#9A978A;">Agência</span><span id="reviewAgencia" style="font-size:15px;font-weight:500;">—</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid #E7E3D9;padding-bottom:10px;"><span style="font-size:13px;color:#9A978A;">Contas ativas</span><span id="reviewContas" style="font-size:15px;font-weight:500;">—</span></div>
+          <div style="display:flex;justify-content:space-between;padding-bottom:2px;"><span style="font-size:13px;color:#9A978A;">WhatsApp</span><span id="reviewWhatsapp" style="font-size:15px;font-weight:500;">—</span></div>
+        </div>
+      </div>
+
+      <div class="fq-step" data-step="6" style="text-align:center;">
+        <div style="width:56px;height:56px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 13.5L10.5 19L21 7" stroke="#161810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.01em;margin:0 0 12px;">Recebido, <span id="firstNameOut2">tudo bem</span>!</p>
+        <p style="font-size:15px;color:#6B6A5F;margin:0 0 28px;">O time da Trackto entra em contato em breve pelo e-mail ou WhatsApp que você deixou. Enquanto isso, é só chamar a gente direto:</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;background:#161810;color:#FAF9F6;padding:13px 22px;border-radius:10px;font-weight:600;font-size:14px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3C7.03 3 3 7.03 3 12C3 13.63 3.43 15.16 4.19 16.48L3 21L7.65 19.84C8.93 20.53 10.42 20.92 12 20.92C16.97 20.92 21 16.9 21 11.92C21 6.95 16.97 3 12 3Z" stroke="#FAF9F6" stroke-width="1.6" stroke-linejoin="round"></path><path d="M8.7 8.3C8.9 7.9 9.2 7.9 9.4 7.9C9.6 7.9 9.8 7.9 9.9 8.2C10.1 8.6 10.5 9.6 10.6 9.7C10.7 9.9 10.7 10.1 10.6 10.3C10.4 10.7 10.1 10.9 10 11.1C9.9 11.2 9.8 11.4 9.9 11.6C10.4 12.5 11 13.2 11.9 13.7C12.1 13.8 12.3 13.8 12.4 13.6C12.6 13.4 12.9 13.1 13.1 12.9C13.3 12.7 13.4 12.7 13.6 12.8C13.9 12.9 14.9 13.4 15.1 13.5C15.3 13.6 15.5 13.7 15.5 13.8C15.6 14.2 15.5 14.7 15.3 15.1C15 15.4 14.5 15.7 14 15.7C13 15.7 11.8 15.3 10.6 14.4C9.1 13.3 8.1 11.9 7.8 11.3C7.6 11 7.4 10.5 7.4 10C7.4 9.4 7.7 8.9 8 8.6C8.2 8.4 8.5 8.3 8.7 8.3Z" fill="#FAF9F6"></path></svg>
+            WhatsApp
+          </a>
+          <a href="https://instagram.com/trackto" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;border:1px solid #D8D3C4;padding:13px 22px;border-radius:10px;font-weight:600;font-size:14px;color:#161810;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5" stroke="#161810" stroke-width="1.7"></rect><circle cx="12" cy="12" r="4" stroke="#161810" stroke-width="1.7"></circle><circle cx="17.2" cy="6.8" r="1.15" fill="#161810"></circle></svg>
+            Instagram
+          </a>
+        </div>
+        <a href="index.html" style="display:inline-block;font-size:13px;color:#8C897A;font-weight:600;">Voltar pro site</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- navegação -->
+  <div id="navRow" style="max-width:640px;width:100%;margin:0 auto;padding:0 24px 40px;display:flex;justify-content:space-between;align-items:center;">
+    <button id="backBtn" style="background:none;border:none;font-size:14px;color:#8C897A;font-weight:600;cursor:pointer;padding:10px 4px;visibility:hidden;">Voltar</button>
+    <button id="nextBtn" style="background:var(--accent);color:#161810;border:none;padding:14px 26px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;">Avançar →</button>
+    <button id="submitBtn" style="background:var(--accent);color:#161810;border:none;padding:14px 30px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;display:none;">Enviar resposta</button>
+  </div>
+
+  <!-- formulário real: envia as respostas pro Apps Script conectado à planilha -->
+  <form id="fq-hidden-form" action="https://script.google.com/macros/s/SUBSTITUA_PELO_SEU_ID_DE_IMPLANTACAO/exec" method="POST" target="_blank" style="display:none;">
+    <input type="text" name="nome" id="hiddenNome">
+    <input type="text" name="email" id="hiddenEmail">
+    <input type="text" name="agencia" id="hiddenAgencia">
+    <input type="text" name="contas" id="hiddenContas">
+    <input type="text" name="whatsapp" id="hiddenWhatsapp">
+  </form>
+
+</div>
+
+<script>
+  var TOTAL_QUESTIONS = 5;
+  var step = 0;
+  var values = { nome:'', email:'', agencia:'', contas:'', whatsapp:'' };
+  var stepLabels = ['1 de 5','2 de 5','3 de 5','4 de 5','5 de 5','Revisão'];
+
+  var steps = document.querySelectorAll('[data-step]');
+  var inputs = document.querySelectorAll('[data-field]');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var submitBtn = document.getElementById('submitBtn');
+  var navRow = document.getElementById('navRow');
+
+  inputs.forEach(function(inp){
+    inp.addEventListener('input', function(){ values[inp.dataset.field] = inp.value; });
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter') { e.preventDefault(); next(); }
+    });
+  });
+
+  function firstName(){
+    return (values.nome || '').split(' ')[0] || 'tudo bem';
+  }
+
+  function canAdvance(){
+    if (step === 0) return values.nome.trim().length > 0;
+    if (step === 1) return /\S+@\S+\.\S+/.test(values.email);
+    return true;
+  }
+
+  function render(){
+    steps.forEach(function(el){
+      el.classList.toggle('active', Number(el.dataset.step) === step);
+    });
+
+    document.getElementById('firstNameOut1').textContent = firstName();
+    document.getElementById('firstNameOut2').textContent = firstName();
+
+    if (step === 5) {
+      document.getElementById('reviewNome').textContent = values.nome || '—';
+      document.getElementById('reviewEmail').textContent = values.email || '—';
+      document.getElementById('reviewAgencia').textContent = values.agencia || '—';
+      document.getElementById('reviewContas').textContent = values.contas || '—';
+      document.getElementById('reviewWhatsapp').textContent = values.whatsapp || '—';
+    }
+
+    var pct = step >= 6 ? 100 : Math.round((Math.min(step, TOTAL_QUESTIONS) / TOTAL_QUESTIONS) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('stepLabel').textContent = step >= 6 ? '' : stepLabels[step];
+
+    backBtn.style.visibility = step === 0 ? 'hidden' : 'visible';
+    navRow.style.display = step >= 6 ? 'none' : 'flex';
+    nextBtn.style.display = step < 5 ? 'inline-block' : 'none';
+    submitBtn.style.display = step === 5 ? 'inline-block' : 'none';
+    nextBtn.disabled = !canAdvance();
+  }
+
+  function next(){
+    if (!canAdvance()) return;
+    if (step < 5) { step++; render(); focusActive(); }
+  }
+
+  function back(){
+    if (step > 0) { step--; render(); focusActive(); }
+  }
+
+  function focusActive(){
+    var active = document.querySelector('[data-step="' + step + '"] [data-field]');
+    if (active) active.focus();
+  }
+
+  function submitForm(){
+    document.getElementById('hiddenNome').value = values.nome;
+    document.getElementById('hiddenEmail').value = values.email;
+    document.getElementById('hiddenAgencia').value = values.agencia;
+    document.getElementById('hiddenContas').value = values.contas;
+    document.getElementById('hiddenWhatsapp').value = values.whatsapp;
+    document.getElementById('fq-hidden-form').submit();
+    step = 6;
+    render();
+  }
+
+  nextBtn.addEventListener('click', next);
+  backBtn.addEventListener('click', back);
+  submitBtn.addEventListener('click', submitForm);
+
+  render();
+</script>
+
+</body>
+</html>

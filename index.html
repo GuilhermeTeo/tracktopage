@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trackto — Sua agência, em um só sistema</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{ --accent:#D7FF3D; }
+  body{margin:0;background:#FAF9F6;font-family:'IBM Plex Sans',sans-serif;color:#161810;}
+  *{box-sizing:border-box;}
+  a{color:inherit;text-decoration:none;}
+  .navlinks{display:flex;gap:36px;align-items:center;}
+  .menu-btn{display:none;cursor:pointer;padding:8px;}
+  .menu-check{display:none;}
+  .heroGrid{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  .featGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .stepGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  .testiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .baRow{display:grid;grid-template-columns:1fr 44px 1fr;gap:0;align-items:stretch;opacity:0;animation:baFadeUp .7s cubic-bezier(.16,1,.3,1) forwards;transition:transform .25s ease;}
+  .calcGrid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:28px;align-items:start;}
+  .calcStats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  input[type="range"]{-webkit-appearance:none;width:100%;height:4px;border-radius:999px;background:#E7E3D9;outline:none;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:999px;background:#161810;border:3px solid #FAF9F6;box-shadow:0 0 0 1px #161810;cursor:pointer;}
+  input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:999px;background:#161810;border:3px solid #FAF9F6;box-shadow:0 0 0 1px #161810;cursor:pointer;border:none;}
+  .baRow:hover{transform:scale(1.012);}
+  .baAfterCell{transition:background .25s ease;}
+  .baRow:hover .baAfterCell{background:#F3FBD9 !important;}
+  @keyframes baFadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.baRow{animation:none;opacity:1;}.baRow:hover{transform:none;}}
+  .marqueeWrap{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);}
+  .marqueeTrack{display:flex;gap:18px;width:max-content;animation:marqueeLeft 46s linear infinite;}
+  .marqueeTrackRev{display:flex;gap:18px;width:max-content;animation:marqueeRight 46s linear infinite;}
+  .marqueeWrap:hover .marqueeTrack,.marqueeWrap:hover .marqueeTrackRev{animation-play-state:paused;}
+  .testiCard{background:#FFFFFF;border:1px solid #E2DED0;border-radius:14px;padding:24px;width:320px;flex-shrink:0;display:flex;flex-direction:column;gap:16px;}
+  @keyframes marqueeLeft{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes marqueeRight{from{transform:translateX(-50%);}to{transform:translateX(0);}}
+  @media (prefers-reduced-motion:reduce){.marqueeTrack,.marqueeTrackRev{animation:none;}}
+  details summary{cursor:pointer;}
+  details summary::-webkit-details-marker{display:none;}
+  @media (max-width:900px){
+    .heroGrid{grid-template-columns:1fr;gap:40px;}
+    .featGrid{grid-template-columns:1fr 1fr;}
+    .stepGrid{grid-template-columns:1fr;}
+    .testiGrid{grid-template-columns:1fr;}
+    .baRow{grid-template-columns:1fr;}
+    .baArrow{display:none;}
+    .calcGrid{grid-template-columns:1fr;}
+    .calcStats{grid-template-columns:1fr;}
+  }
+  @media (max-width:640px){
+    .featGrid{grid-template-columns:1fr;}
+    .navlinks{position:absolute;top:72px;left:0;right:0;background:#FAF9F6;flex-direction:column;align-items:flex-start;padding:20px 24px 28px;gap:18px;display:none;border-bottom:1px solid #E7E3D9;z-index:40;}
+    .menu-check:checked ~ .navwrap .navlinks{display:flex;}
+    .menu-btn{display:flex;}
+    .navcta{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div style="width:100%;min-height:100vh;background:#FAF9F6;color:#161810;position:relative;">
+
+  <!-- NAV -->
+  <input type="checkbox" class="menu-check" id="menu-check">
+  <header style="position:sticky;top:0;z-index:50;background:rgba(250,249,246,0.92);backdrop-filter:blur(6px);border-bottom:1px solid #E7E3D9;">
+    <div style="max-width:1180px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;position:relative;">
+      <a href="#top" aria-label="Trackto, página inicial" style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;letter-spacing:-0.01em;">Trackto</span>
+      </a>
+
+      <label for="menu-check" class="menu-btn" aria-label="Abrir menu">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6H19M3 11H19M3 16H19" stroke="#161810" stroke-width="1.8" stroke-linecap="round"></path>
+        </svg>
+      </label>
+
+      <div class="navwrap" style="display:contents;">
+        <nav class="navlinks">
+          <a href="#produto" style="font-size:15px;color:#4B4A42;">Produto</a>
+          <a href="#como-funciona" style="font-size:15px;color:#4B4A42;">Como funciona</a>
+          <a href="#antes-depois" style="font-size:15px;color:#4B4A42;">Antes e depois</a>
+          <a href="#calculadora" style="font-size:15px;color:#4B4A42;">Calculadora</a>
+          <a href="#depoimentos" style="font-size:15px;color:#4B4A42;">Depoimentos</a>
+          <a href="#faq" style="font-size:15px;color:#4B4A42;">Dúvidas</a>
+          <a href="form.html" class="navcta" style="background:#161810;color:#FAF9F6;padding:10px 20px;border-radius:9px;font-size:14px;font-weight:600;">Começar agora</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:88px 24px 64px;">
+    <div class="heroGrid">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:#F0EEE5;border:1px solid #E2DED0;padding:7px 14px;border-radius:999px;font-size:13px;color:#5A5848;margin-bottom:26px;">
+          <span style="width:6px;height:6px;border-radius:999px;background:var(--accent);"></span>
+          Feito para agências de tráfego pago
+        </div>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,4.6vw,54px);line-height:1.06;letter-spacing:-0.02em;margin:0 0 24px;">
+          Sua agência não precisa de seis ferramentas pra rodar.
+        </h1>
+        <p style="font-size:18px;line-height:1.6;color:#4B4A42;max-width:520px;margin:0 0 36px;">
+          Trackto junta tarefas, CRM, comunicação e relatórios de campanha em um único sistema — construído sob medida pro fluxo que sua equipe já usa, sem forçar ninguém a se adaptar a mais um app.
+        </p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;">
+          <a href="form.html" style="background:var(--accent);color:#161810;padding:15px 26px;border-radius:10px;font-weight:600;font-size:15px;">Quero conhecer</a>
+          <a href="#como-funciona" style="border:1px solid #D8D3C4;padding:15px 26px;border-radius:10px;font-weight:600;font-size:15px;color:#161810;">Ver como funciona</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-top:3px;flex-shrink:0;"><path d="M3 8.5L6 11.5L13 4.5" stroke="#4B4A42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="font-size:14px;color:#4B4A42;">Um sistema só, no lugar de cinco assinaturas</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-top:3px;flex-shrink:0;"><path d="M3 8.5L6 11.5L13 4.5" stroke="#4B4A42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="font-size:14px;color:#4B4A42;">Configurado sob medida pro fluxo da sua equipe</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start;"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-top:3px;flex-shrink:0;"><path d="M3 8.5L6 11.5L13 4.5" stroke="#4B4A42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg><span style="font-size:14px;color:#4B4A42;">Automações que tiram tarefa repetitiva da mão da equipe</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:18px;padding:26px;box-shadow:0 24px 60px -32px rgba(22,24,16,0.25);">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 14px;font-weight:500;">Sua operação hoje</p>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAF8F3;border-radius:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3L13 13M13 3L3 13" stroke="#C24B3E" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <span style="font-size:14px;color:#9A978A;text-decoration:line-through;">Reportei — relatórios de tráfego</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAF8F3;border-radius:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3L13 13M13 3L3 13" stroke="#C24B3E" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <span style="font-size:14px;color:#9A978A;text-decoration:line-through;">ClickUp — tarefas e projetos</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAF8F3;border-radius:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3L13 13M13 3L3 13" stroke="#C24B3E" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <span style="font-size:14px;color:#9A978A;text-decoration:line-through;">Discord — comunicação da equipe</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAF8F3;border-radius:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3L13 13M13 3L3 13" stroke="#C24B3E" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <span style="font-size:14px;color:#9A978A;text-decoration:line-through;">Trello — quadro de campanhas</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#FAF8F3;border-radius:10px;">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3L13 13M13 3L3 13" stroke="#C24B3E" stroke-width="1.8" stroke-linecap="round"></path></svg>
+              <span style="font-size:14px;color:#9A978A;text-decoration:line-through;">Kommo CRM — funil de clientes</span>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:center;padding:4px 0 14px;">
+            <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 1V21M9 21L2 14M9 21L16 14" stroke="#B8B4A4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
+          <div style="border-radius:10px;padding:16px;display:flex;align-items:center;gap:12px;background:var(--accent);">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 9.5L7 13.5L15 4.5" stroke="#161810" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span style="font-size:15px;font-weight:600;color:#161810;">Trackto — tudo isso, em um só sistema</span>
+          </div>
+        </div>
+        <a href="form.html" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:14px;border:1px solid #D8D3C4;border-radius:10px;font-weight:600;font-size:14px;color:#161810;">
+          Falar com o time
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 7H11M11 7L7 3M11 7L7 11" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES / PRODUTO -->
+  <section id="produto" style="max-width:1180px;margin:0 auto;padding:64px 24px;">
+    <div style="max-width:600px;margin-bottom:48px;">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Uma ferramenta pra cada parte da operação. Todas dentro da mesma casa.</h2>
+      <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Nada de exportar planilha de um app pra colar em outro. Cada área da sua agência já conversa com as demais.</p>
+    </div>
+
+    <div class="featGrid">
+      <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:26px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><rect x="3" y="3" width="16" height="16" rx="3" stroke="#161810" stroke-width="1.6"></rect><path d="M7 11L10 14L15 8" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Tarefas e projetos</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Briefings, entregas e prazos organizados por cliente e por campanha — sem quadro perdido no Trello.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:26px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><circle cx="8" cy="7" r="3" stroke="#161810" stroke-width="1.6"></circle><path d="M3 19C3 15.5 5.5 13.5 8 13.5C10.5 13.5 13 15.5 13 19" stroke="#161810" stroke-width="1.6" stroke-linecap="round"></path><path d="M15 8C16.5 8 17.5 6.8 17.5 5.5C17.5 4.2 16.5 3 15 3" stroke="#161810" stroke-width="1.6" stroke-linecap="round"></path><path d="M14 13.2C16.6 13.6 19 15.4 19 19" stroke="#161810" stroke-width="1.6" stroke-linecap="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">CRM de clientes</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Funil comercial e relacionamento em um só lugar, do primeiro contato até a renovação do contrato.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:26px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><path d="M3 5C3 3.9 3.9 3 5 3H17C18.1 3 19 3.9 19 5V13C19 14.1 18.1 15 17 15H8L4 18.5V15H5C3.9 15 3 14.1 3 13V5Z" stroke="#161810" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Comunicação da equipe</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Canais organizados por cliente ou campanha, com histórico ligado direto à tarefa que originou a conversa.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:26px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><path d="M4 18V10M11 18V4M18 18V13" stroke="#161810" stroke-width="1.8" stroke-linecap="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Relatórios de campanha</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Dashboards de tráfego atualizados automaticamente, prontos pra mandar ao cliente sem montar de novo toda semana.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1.5px solid var(--accent);border-radius:14px;padding:26px;position:relative;">
+        <span style="position:absolute;top:-10px;right:20px;background:var(--accent);color:#161810;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;">Favorito dos clientes</span>
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><path d="M11 3L13 8L18 9L14 13L15 18L11 15.5L7 18L8 13L4 9L9 8L11 3Z" stroke="#161810" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Automações sob medida</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Envio de relatório, criação de tarefa recorrente, alerta de prazo estourado — o que hoje sua equipe faz na mão, o sistema faz sozinho.</p>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:26px;">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="margin-bottom:16px;"><rect x="3" y="4" width="16" height="14" rx="2" stroke="#161810" stroke-width="1.6"></rect><path d="M3 8H19" stroke="#161810" stroke-width="1.6"></path><path d="M7 12H15M7 15H12" stroke="#161810" stroke-width="1.4" stroke-linecap="round"></path></svg>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Onboarding de clientes</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.55;margin:0;">Formulários e briefings padronizados pra cada cliente novo entrar no ritmo da equipe sem fricção.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOB MEDIDA -->
+  <section style="background:#161810;color:#FAF9F6;">
+    <div style="max-width:1180px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:1fr;gap:20px;">
+      <div style="max-width:640px;">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 18px;">O sistema se adapta à sua agência. Não o contrário.</h2>
+        <p style="font-size:16px;color:#C9C6B8;line-height:1.65;margin:0 0 8px;">Toda ferramenta pronta obriga sua equipe a mudar o processo pra caber no software. A gente faz o caminho inverso: mapeamos como sua agência já trabalha e configuramos o Trackto em cima disso — nomenclatura, etapas do funil, campos do briefing, tudo do seu jeito.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" style="max-width:1180px;margin:0 auto;padding:72px 24px;">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 44px;">Como a migração funciona</h2>
+    <div class="stepGrid">
+      <div>
+        <div style="width:38px;height:38px;border-radius:10px;background:#F0EEE5;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;margin-bottom:18px;">1</div>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Mapeamos seu fluxo atual</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:0;">Entendemos como tarefas, clientes e relatórios circulam hoje entre Reportei, ClickUp, Discord, Trello e Kommo.</p>
+      </div>
+      <div>
+        <div style="width:38px;height:38px;border-radius:10px;background:#F0EEE5;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;margin-bottom:18px;">2</div>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Configuramos o Trackto sob medida</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:0;">Recriamos suas etapas, seus campos e seus relatórios dentro do sistema — não o padrão genérico de fábrica.</p>
+      </div>
+      <div>
+        <div style="width:38px;height:38px;border-radius:10px;background:#F0EEE5;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;margin-bottom:18px;">3</div>
+        <h3 style="font-size:17px;font-weight:600;margin:0 0 8px;">Sua equipe migra em poucos dias</h3>
+        <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:0;">Acompanhamos a troca de perto, com o time já operando no novo sistema em vez de aprender sozinho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANTES E DEPOIS -->
+  <section id="antes-depois" style="max-width:1180px;margin:0 auto;padding:72px 24px;">
+    <div style="max-width:600px;margin-bottom:44px;">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">O antes e depois de centralizar a operação.</h2>
+      <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Os números variam de agência pra agência — preencha com os seus assim que fechar os primeiros meses de uso.</p>
+    </div>
+
+    <div style="background:#FFFFFF;border:1px solid #E7E3D9;border-radius:16px;overflow:hidden;">
+      <div class="baRow" style="border-bottom:1px solid #E7E3D9;animation-delay:0.05s;">
+        <div style="padding:18px 24px;">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 6px;font-weight:500;">Antes</p>
+          <p style="font-size:15px;color:#3A3930;margin:0;">Time monta relatório de campanha à mão toda semana, perde tempo e produtividade</p>
+        </div>
+        <div class="baArrow" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 9H16M16 9L11 4M16 9L11 14" stroke="#B8B4A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div class="baAfterCell" style="padding:18px 24px;background:#FAFDF0;">
+          <p style="font-size:12px;color:#5A5848;margin:0 0 6px;font-weight:500;">Com Trackto</p>
+          <p style="font-size:15px;color:#161810;font-weight:500;margin:0;">Relatório entregue toda semana, sem dor de cabeça — equipe economiza [X horas por semana]</p>
+        </div>
+      </div>
+      <div class="baRow" style="border-bottom:1px solid #E7E3D9;animation-delay:0.14s;">
+        <div style="padding:18px 24px;">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 6px;font-weight:500;">Antes</p>
+          <p style="font-size:15px;color:#3A3930;margin:0;">Onboarding de cliente novo espalhado em vários apps e planilhas</p>
+        </div>
+        <div class="baArrow" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 9H16M16 9L11 4M16 9L11 14" stroke="#B8B4A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div class="baAfterCell" style="padding:18px 24px;background:#FAFDF0;">
+          <p style="font-size:12px;color:#5A5848;margin:0 0 6px;font-weight:500;">Com Trackto</p>
+          <p style="font-size:15px;color:#161810;font-weight:500;margin:0;">Formulário e briefing padronizados, inteligência para escalar</p>
+        </div>
+      </div>
+      <div class="baRow" style="border-bottom:1px solid #E7E3D9;animation-delay:0.23s;">
+        <div style="padding:18px 24px;">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 6px;font-weight:500;">Antes</p>
+          <p style="font-size:15px;color:#3A3930;margin:0;">Gestor perde tempo cobrando status em Discord, ClickUp e Trello</p>
+        </div>
+        <div class="baArrow" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 9H16M16 9L11 4M16 9L11 14" stroke="#B8B4A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div class="baAfterCell" style="padding:18px 24px;background:#FAFDF0;">
+          <p style="font-size:12px;color:#5A5848;margin:0 0 6px;font-weight:500;">Com Trackto</p>
+          <p style="font-size:15px;color:#161810;font-weight:500;margin:0;">Status visível em tempo real, sem precisar perguntar</p>
+        </div>
+      </div>
+      <div class="baRow" style="border-bottom:1px solid #E7E3D9;animation-delay:0.32s;">
+        <div style="padding:18px 24px;">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 6px;font-weight:500;">Antes</p>
+          <p style="font-size:15px;color:#3A3930;margin:0;">Tarefa operacional exige uma pessoa só pra manter as ferramentas em dia</p>
+        </div>
+        <div class="baArrow" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 9H16M16 9L11 4M16 9L11 14" stroke="#B8B4A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div class="baAfterCell" style="padding:18px 24px;background:#FAFDF0;">
+          <p style="font-size:12px;color:#5A5848;margin:0 0 6px;font-weight:500;">Com Trackto</p>
+          <p style="font-size:15px;color:#161810;font-weight:500;margin:0;">Automação assume o operacional repetitivo, equipe foca em estratégia e performance</p>
+        </div>
+      </div>
+      <div class="baRow" style="animation-delay:0.41s;">
+        <div style="padding:18px 24px;">
+          <p style="font-size:12px;color:#9A978A;margin:0 0 6px;font-weight:500;">Antes</p>
+          <p style="font-size:15px;color:#3A3930;margin:0;">Assinaturas de ferramentas diferentes todo mês</p>
+        </div>
+        <div class="baArrow" style="display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M2 9H16M16 9L11 4M16 9L11 14" stroke="#B8B4A4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <div class="baAfterCell" style="padding:18px 24px;background:#FAFDF0;">
+          <p style="font-size:12px;color:#5A5848;margin:0 0 6px;font-weight:500;">Com Trackto</p>
+          <p style="font-size:15px;color:#161810;font-weight:500;margin:0;">Uma cobrança só, sem cobrança por módulo ou aumento de plano</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULADORA -->
+  <section id="calculadora" style="background:#F0EEE5;">
+    <div style="max-width:1180px;margin:0 auto;padding:72px 24px;">
+      <div style="max-width:620px;margin-bottom:40px;">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Quanto a sua agência recupera com o Trackto.</h2>
+        <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Ajuste pros números da sua operação e veja o ganho de tempo e a redução de gasto com ferramentas.</p>
+      </div>
+
+      <div class="calcGrid">
+        <div style="background:#FFFFFF;border:1px solid #E2DED0;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:26px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+              <label for="accountsRange" style="font-size:14px;font-weight:600;">Contas ativas hoje</label>
+              <span id="accountsOut" style="font-size:14px;color:#5A5848;">10</span>
+            </div>
+            <input id="accountsRange" type="range" min="1" max="60" step="1" value="10" aria-label="Número de contas ativas">
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+              <label for="hoursRange" style="font-size:14px;font-weight:600;">Horas operacionais por conta / semana</label>
+              <span id="hoursOut" style="font-size:14px;color:#5A5848;">3h</span>
+            </div>
+            <input id="hoursRange" type="range" min="0.5" max="10" step="0.5" value="3" aria-label="Horas operacionais por conta por semana">
+            <p style="font-size:12px;color:#9A978A;margin:8px 0 0;">Relatório, cobrança de status, briefing, tarefas manuais</p>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+              <label for="spendRange" style="font-size:14px;font-weight:600;">Gasto mensal com ferramentas</label>
+              <span style="font-size:14px;color:#5A5848;">R$ <span id="spendOut">800</span></span>
+            </div>
+            <input id="spendRange" type="range" min="100" max="4000" step="50" value="800" aria-label="Gasto mensal com ferramentas">
+            <p style="font-size:12px;color:#9A978A;margin:8px 0 0;">Reportei + ClickUp + Discord + Trello + Kommo CRM, somados</p>
+          </div>
+          <p style="font-size:12px;color:#9A978A;margin:0;border-top:1px solid #E7E3D9;padding-top:16px;">Estimativa com base em <span id="reductionOut">60</span>% de redução no tempo operacional e <span id="savingsOut">40</span>% de economia na assinatura — os números reais variam por agência.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="calcStats">
+            <div style="background:#FFFFFF;border:1px solid #E2DED0;border-radius:14px;padding:22px;">
+              <p style="font-size:12px;color:#8C897A;margin:0 0 8px;">Por semana</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;margin:0;"><span id="weeklyOut">21.0</span>h</p>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E2DED0;border-radius:14px;padding:22px;">
+              <p style="font-size:12px;color:#8C897A;margin:0 0 8px;">Por mês</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;margin:0;"><span id="monthlyOut">91</span>h</p>
+            </div>
+            <div style="background:#FFFFFF;border:1px solid #E2DED0;border-radius:14px;padding:22px;">
+              <p style="font-size:12px;color:#8C897A;margin:0 0 8px;">Por ano</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;margin:0;"><span id="annualOut">1092</span>h</p>
+            </div>
+          </div>
+
+          <div style="background:#161810;border-radius:16px;padding:28px;display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;">
+            <div>
+              <p style="font-size:12px;color:#9A978A;margin:0 0 8px;">Economia em assinaturas / mês</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;color:var(--accent);margin:0;">R$ <span id="monthlySavingsOut">320</span></p>
+            </div>
+            <div>
+              <p style="font-size:12px;color:#9A978A;margin:0 0 8px;">Economia em assinaturas / ano</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;color:var(--accent);margin:0;">R$ <span id="annualSavingsOut">3840</span></p>
+            </div>
+          </div>
+
+          <div style="background:#FFFFFF;border:1px solid #E2DED0;border-radius:14px;padding:20px 22px;display:flex;align-items:center;gap:14px;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;"><path d="M11 2L13 7L18 8L14 12L15 17L11 14.5L7 17L8 12L4 8L9 7L11 2Z" stroke="#161810" stroke-width="1.4" stroke-linejoin="round"></path></svg>
+            <p style="font-size:14px;color:#4B4A42;margin:0;">Isso equivale a <strong id="fteOut" style="color:#161810;">0,5x</strong> de uma pessoa full-time dedicada só a manter ferramentas em dia — tempo que volta pra estratégia e performance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section id="depoimentos" style="background:#F0EEE5;overflow:hidden;">
+    <div style="max-width:1180px;margin:0 auto;padding:72px 0;">
+      <div style="max-width:560px;margin-bottom:40px;padding:0 24px;">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Quem já tirou a agência do modo apagar incêndio.</h2>
+        <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Histórias de agências que trocaram a colcha de retalhos de ferramentas por um sistema só.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="marqueeWrap">
+          <div class="marqueeTrack">
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">A gente cancelou Trello, Discord e o CRM no mesmo mês. A equipe parou de perguntar "isso tá em qual ferramenta mesmo?".</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Rafael Nogueira</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Sócio, Nogueira Tráfego</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">O relatório que eu levava duas horas pra montar toda sexta agora já sai pronto pro cliente. Isso sozinho pagou a virada.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Camila Duarte</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Gestora de tráfego, Duarte Performance</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Migramos em uma semana e o time nem sentiu. O onboarding sob medida foi bem mais tranquilo do que eu esperava.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Diego Salvador</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Fundador, Salvador Ads</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">A gente cancelou Trello, Discord e o CRM no mesmo mês. A equipe parou de perguntar "isso tá em qual ferramenta mesmo?".</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Rafael Nogueira</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Sócio, Nogueira Tráfego</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">O relatório que eu levava duas horas pra montar toda sexta agora já sai pronto pro cliente. Isso sozinho pagou a virada.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Camila Duarte</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Gestora de tráfego, Duarte Performance</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Migramos em uma semana e o time nem sentiu. O onboarding sob medida foi bem mais tranquilo do que eu esperava.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Diego Salvador</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Fundador, Salvador Ads</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="marqueeWrap">
+          <div class="marqueeTrackRev">
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Antes eu pagava por cinco assinaturas diferentes e ainda perdia informação entre elas. Agora é tudo em um painel só.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Bianca Ferraz</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">CEO, Ferraz Mídia</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">O suporte configurou o funil do jeito que a gente já usava no papel. Não tive que mudar meu processo pra caber no sistema.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Thiago Amorim</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Sócio, Amorim Growth</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Minha equipe é pequena e eu achava que um sistema assim era coisa de agência grande. Se ajustou direitinho ao nosso tamanho.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Larissa Prado</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Fundadora, Prado Digital</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Antes eu pagava por cinco assinaturas diferentes e ainda perdia informação entre elas. Agora é tudo em um painel só.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Bianca Ferraz</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">CEO, Ferraz Mídia</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">O suporte configurou o funil do jeito que a gente já usava no papel. Não tive que mudar meu processo pra caber no sistema.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Thiago Amorim</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Sócio, Amorim Growth</p></div>
+            </div>
+            <div class="testiCard">
+              <svg width="24" height="16" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M0 18V10.8C0 4.5 4.2 0.6 10.4 0V4.2C7.3 4.8 5.4 6.8 5.4 10H10.4V18H0ZM15.6 18V10.8C15.6 4.5 19.8 0.6 26 0V4.2C22.9 4.8 21 6.8 21 10H26V18H15.6Z" fill="#D8D3C4"></path></svg>
+              <p style="font-size:14px;color:#3A3930;line-height:1.6;margin:0;">Minha equipe é pequena e eu achava que um sistema assim era coisa de agência grande. Se ajustou direitinho ao nosso tamanho.</p>
+              <div><p style="font-size:14px;font-weight:600;margin:0;">Larissa Prado</p><p style="font-size:13px;color:#8C897A;margin:2px 0 0;">Fundadora, Prado Digital</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="max-width:800px;margin:0 auto;padding:72px 24px;">
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 36px;">Dúvidas frequentes</h2>
+
+    <details style="border-top:1px solid #E7E3D9;padding:18px 0;">
+      <summary style="font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        O que é a Trackto?
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;margin-left:12px;"><path d="M1 5L7 11L13 5" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </summary>
+      <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:14px 0 0;">Um sistema único, sob medida, que substitui a combinação de ferramentas de tarefas, CRM, comunicação e relatórios que a maioria das agências de tráfego hoje monta com apps separados.</p>
+    </details>
+
+    <details style="border-top:1px solid #E7E3D9;padding:18px 0;">
+      <summary style="font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        Preciso trocar tudo de uma vez?
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;margin-left:12px;"><path d="M1 5L7 11L13 5" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </summary>
+      <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:14px 0 0;">Não. A migração é acompanhada por etapas, começando pela área que gera mais dor pra sua equipe hoje, até a operação inteira rodar dentro do Trackto.</p>
+    </details>
+
+    <details style="border-top:1px solid #E7E3D9;padding:18px 0;">
+      <summary style="font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        Meus dados de CRM e tarefas são migrados?
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;margin-left:12px;"><path d="M1 5L7 11L13 5" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </summary>
+      <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:14px 0 0;">Sim, clientes, negociações e tarefas em andamento são importados no processo de onboarding, sem sua equipe precisar recadastrar nada manualmente.</p>
+    </details>
+
+    <details style="border-top:1px solid #E7E3D9;padding:18px 0;">
+      <summary style="font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        Funciona pra qualquer tamanho de agência?
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;margin-left:12px;"><path d="M1 5L7 11L13 5" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </summary>
+      <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:14px 0 0;">Sim. A configuração sob medida se ajusta desde agências de uma pessoa só até equipes com múltiplos gestores de tráfego e vários clientes ativos.</p>
+    </details>
+
+    <details style="border-top:1px solid #E7E3D9;border-bottom:1px solid #E7E3D9;padding:18px 0;">
+      <summary style="font-size:16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        Quanto custa?
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0;margin-left:12px;"><path d="M1 5L7 11L13 5" stroke="#161810" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </summary>
+      <p style="font-size:14px;color:#6B6A5F;line-height:1.6;margin:14px 0 0;">O valor é definido conforme o tamanho da operação e o escopo da configuração sob medida — sempre um valor único, sem cobrança separada por módulo.</p>
+    </details>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section id="comecar" style="max-width:1180px;margin:0 auto;padding:24px 24px 96px;">
+    <div style="background:#161810;border-radius:20px;padding:64px 40px;text-align:center;">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#FAF9F6;font-size:clamp(26px,3.4vw,38px);letter-spacing:-0.01em;margin:0 0 16px;">Chegou até aqui? Vamos montar o seu sistema sob medida.</h2>
+      <p style="color:#C9C6B8;font-size:16px;margin:0 0 32px;">Conta pra gente como sua agência trabalha hoje e a gente mostra como fica dentro do Trackto.</p>
+      <a href="form.html" style="display:inline-block;background:var(--accent);color:#161810;padding:16px 32px;border-radius:10px;font-weight:600;font-size:15px;">Falar com o time</a>
+    </div>
+  </section>
+
+  <!-- CRÉDITO -->
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px 20px;text-align:right;">
+    <span style="font-size:11px;color:#B8B4A4;">desenvolvido por Grupo TCK</span>
+  </div>
+
+</div>
+
+<script>
+  // Ajuste esses dois números quando tiver dados reais de cliente
+  var REDUCTION_PCT = 60; // % de redução no tempo operacional
+  var SAVINGS_PCT = 40;   // % de economia na assinatura
+
+  function fmt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+
+  function recalc(){
+    var accounts = Number(document.getElementById('accountsRange').value);
+    var hours = Number(document.getElementById('hoursRange').value);
+    var spend = Number(document.getElementById('spendRange').value);
+
+    document.getElementById('accountsOut').textContent = accounts;
+    document.getElementById('hoursOut').textContent = hours + 'h';
+    document.getElementById('spendOut').textContent = fmt(spend);
+    document.getElementById('reductionOut').textContent = REDUCTION_PCT;
+    document.getElementById('savingsOut').textContent = SAVINGS_PCT;
+
+    var weekly = accounts * hours * (REDUCTION_PCT / 100);
+    var monthly = weekly * 4.33;
+    var annual = weekly * 52;
+    var monthlySavings = spend * (SAVINGS_PCT / 100);
+    var annualSavings = monthlySavings * 12;
+    var fte = monthly / 176;
+
+    document.getElementById('weeklyOut').textContent = weekly.toFixed(1);
+    document.getElementById('monthlyOut').textContent = fmt(monthly);
+    document.getElementById('annualOut').textContent = fmt(annual);
+    document.getElementById('monthlySavingsOut').textContent = fmt(monthlySavings);
+    document.getElementById('annualSavingsOut').textContent = fmt(annualSavings);
+    document.getElementById('fteOut').textContent = fte < 0.15 ? 'uma pequena fração' : fte.toFixed(1).replace('.', ',') + 'x';
+  }
+
+  ['accountsRange','hoursRange','spendRange'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+  recalc();
+</script>
+
+</body>
+</html>
