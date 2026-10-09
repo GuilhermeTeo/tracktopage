@@ -37,6 +37,27 @@
   @keyframes marqueeRight{from{transform:translateX(-50%);}to{transform:translateX(0);}}
   @media (prefers-reduced-motion:reduce){.marqueeTrack,.marqueeTrackRev{animation:none;}}
   details summary{cursor:pointer;}
+  #planos{scroll-margin-top:72px;}
+  .planHead{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap;margin-bottom:44px;}
+  .billToggle{display:inline-flex;background:#F0EEE5;border:1px solid #E2DED0;border-radius:999px;padding:4px;}
+  .billOpt{border:0;background:transparent;font-family:inherit;font-size:14px;font-weight:600;color:#5A5848;padding:9px 20px;border-radius:999px;cursor:pointer;transition:background .2s ease,color .2s ease;}
+  .billOpt:hover{color:#161810;}
+  .billOpt[aria-pressed="true"]{background:var(--accent);color:#161810;}
+  .billOpt:focus-visible,.planBtn:focus-visible{outline:2px solid #161810;outline-offset:2px;}
+  .planGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;}
+  .planCard{position:relative;background:#FFFFFF;border:1px solid #E7E3D9;border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+  .planCard:hover{transform:translateY(-4px);border-color:#D8D3C4;box-shadow:0 24px 60px -32px rgba(22,24,16,0.25);}
+  .planCard.isRec{border:2px solid var(--accent);background:#FAFDF0;padding:27px 23px;box-shadow:0 24px 60px -32px rgba(22,24,16,0.25);}
+  .planCard.isRec:hover{border-color:var(--accent);}
+  .planBadge{position:absolute;top:-12px;left:22px;background:var(--accent);color:#161810;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px;}
+  .planBtn{display:block;text-align:center;padding:13px 20px;border-radius:10px;font-weight:600;font-size:14px;border:1px solid #D8D3C4;color:#161810;transition:background .2s ease,color .2s ease,border-color .2s ease;}
+  .planBtn:hover{background:#161810;border-color:#161810;color:#FAF9F6;}
+  .planBtn.isPrimary{background:var(--accent);border-color:var(--accent);}
+  .planBtn.isPrimary:hover{background:#161810;border-color:#161810;color:#FAF9F6;}
+  .planFeats{list-style:none;margin:0;padding:22px 0 0;border-top:1px solid #E7E3D9;display:flex;flex-direction:column;gap:12px;}
+  .planFeats li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#4B4A42;line-height:1.45;}
+  .planCheck{width:18px;height:18px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  @media (prefers-reduced-motion:reduce){.planCard,.planBtn,.billOpt{transition:none;}.planCard:hover{transform:none;}}
   details summary::-webkit-details-marker{display:none;}
   @media (max-width:900px){
     .heroGrid{grid-template-columns:1fr;gap:40px;}
@@ -47,9 +68,12 @@
     .baArrow{display:none;}
     .calcGrid{grid-template-columns:1fr;}
     .calcStats{grid-template-columns:1fr;}
+    .planGrid{grid-template-columns:1fr 1fr;}
+    .navlinks{gap:20px;}
   }
   @media (max-width:640px){
     .featGrid{grid-template-columns:1fr;}
+    .planGrid{grid-template-columns:1fr;}
     .navlinks{position:absolute;top:72px;left:0;right:0;background:#FAF9F6;flex-direction:column;align-items:flex-start;padding:20px 24px 28px;gap:18px;display:none;border-bottom:1px solid #E7E3D9;z-index:40;}
     .menu-check:checked ~ .navwrap .navlinks{display:flex;}
     .menu-btn{display:flex;}
@@ -82,6 +106,7 @@
           <a href="#antes-depois" style="font-size:15px;color:#4B4A42;">Antes e depois</a>
           <a href="#calculadora" style="font-size:15px;color:#4B4A42;">Calculadora</a>
           <a href="#depoimentos" style="font-size:15px;color:#4B4A42;">Depoimentos</a>
+          <a href="#planos" style="font-size:15px;color:#4B4A42;">Planos</a>
           <a href="#faq" style="font-size:15px;color:#4B4A42;">Dúvidas</a>
           <a href="form.html" class="navcta" style="background:#161810;color:#FAF9F6;padding:10px 20px;border-radius:9px;font-size:14px;font-weight:600;">Começar agora</a>
         </nav>
@@ -459,6 +484,21 @@
     </div>
   </section>
 
+  <!-- PLANOS -->
+  <section id="planos" style="max-width:1180px;margin:0 auto;padding:72px 24px 24px;">
+    <div class="planHead">
+      <div style="max-width:620px;">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Escolha o plano ideal para sua agência</h2>
+        <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Compare os planos e escolha o que melhor acompanha o momento da sua operação. Alterne entre cobrança mensal e anual pra ver os valores.</p>
+      </div>
+      <div class="billToggle" role="group" aria-label="Ciclo de cobrança">
+        <button type="button" class="billOpt" data-cycle="mensal" aria-pressed="true">Mensal</button>
+        <button type="button" class="billOpt" data-cycle="anual" aria-pressed="false">Anual</button>
+      </div>
+    </div>
+    <div class="planGrid" id="planGrid" aria-live="polite"></div>
+  </section>
+
   <!-- FAQ -->
   <section id="faq" style="max-width:800px;margin:0 auto;padding:72px 24px;">
     <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 36px;">Dúvidas frequentes</h2>
@@ -557,6 +597,72 @@
     document.getElementById(id).addEventListener('input', recalc);
   });
   recalc();
+</script>
+
+<script>
+  // ===== PLANOS =====
+  // Edite aqui nomes, descrições, preços e funcionalidades.
+  // price: valor em R$ por ciclo (número). Use null enquanto não houver valor definido — o card mostra PRICE_FALLBACK.
+  // recommended: true destaca o card. cta.href: destino base do botão.
+  var PRICE_FALLBACK = 'Sob consulta';
+  var CYCLES = {
+    mensal: { suffix: '/mês', note: 'Cobrança mensal' },
+    anual:  { suffix: '/ano', note: 'Cobrança anual' }
+  };
+  var PLANS = [
+    { id: 'free', name: 'Free', description: 'Descrição do plano Free.',
+      price: { mensal: 0, anual: 0 },
+      cta: { label: 'Começar agora', href: 'form.html' },
+      features: ['Funcionalidade 1', 'Funcionalidade 2', 'Funcionalidade 3'] },
+    { id: 'basic', name: 'Basic', description: 'Descrição do plano Basic.',
+      price: { mensal: null, anual: null },
+      cta: { label: 'Começar agora', href: 'form.html' },
+      features: ['Funcionalidade 1', 'Funcionalidade 2', 'Funcionalidade 3', 'Funcionalidade 4'] },
+    { id: 'pro', name: 'Pro', description: 'Descrição do plano Pro.', recommended: true,
+      price: { mensal: null, anual: null },
+      cta: { label: 'Começar agora', href: 'form.html' },
+      features: ['Funcionalidade 1', 'Funcionalidade 2', 'Funcionalidade 3', 'Funcionalidade 4', 'Funcionalidade 5'] },
+    { id: 'enterprise', name: 'Enterprise', description: 'Descrição do plano Enterprise.',
+      price: { mensal: null, anual: null },
+      cta: { label: 'Falar com o time', href: 'form.html' },
+      features: ['Funcionalidade 1', 'Funcionalidade 2', 'Funcionalidade 3', 'Funcionalidade 4', 'Funcionalidade 5'] }
+  ];
+
+  // Ponto de integração: troque por checkout/assinatura quando existir.
+  function planHref(plan, cycle){
+    return plan.cta.href + '?plano=' + encodeURIComponent(plan.id) + '&ciclo=' + encodeURIComponent(cycle);
+  }
+
+  var PLAN_CHECK = '<span class="planCheck" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8.5L6 11.5L13 4.5" stroke="#161810" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>';
+
+  function renderPlans(cycle){
+    var c = CYCLES[cycle];
+    document.getElementById('planGrid').innerHTML = PLANS.map(function(plan){
+      var value = plan.price[cycle];
+      var hasPrice = typeof value === 'number';
+      var priceHtml = hasPrice
+        ? '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:34px;letter-spacing:-0.02em;">R$ ' + fmt(value) + '</span><span style="font-size:14px;color:#8C897A;">' + c.suffix + '</span>'
+        : '<span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:26px;letter-spacing:-0.01em;">' + PRICE_FALLBACK + '</span>';
+      return '<article class="planCard' + (plan.recommended ? ' isRec' : '') + '" data-plan="' + plan.id + '" data-cycle="' + cycle + '">' +
+        (plan.recommended ? '<span class="planBadge">Recomendado</span>' : '') +
+        '<h3 style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:20px;margin:0 0 8px;">' + plan.name + '</h3>' +
+        '<p style="font-size:14px;color:#6B6A5F;line-height:1.5;margin:0 0 22px;min-height:42px;">' + plan.description + '</p>' +
+        '<div style="display:flex;align-items:baseline;gap:6px;min-height:44px;">' + priceHtml + '</div>' +
+        '<p style="font-size:12px;color:#9A978A;margin:6px 0 22px;">' + c.note + '</p>' +
+        '<a class="planBtn' + (plan.recommended ? ' isPrimary' : '') + '" href="' + planHref(plan, cycle) + '" style="margin-bottom:24px;">' + plan.cta.label + '</a>' +
+        '<ul class="planFeats">' + plan.features.map(function(f){ return '<li>' + PLAN_CHECK + '<span>' + f + '</span></li>'; }).join('') + '</ul>' +
+      '</article>';
+    }).join('');
+  }
+
+  var billOpts = document.querySelectorAll('.billOpt');
+  billOpts.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      billOpts.forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+      renderPlans(btn.getAttribute('data-cycle'));
+    });
+  });
+  renderPlans('mensal');
 </script>
 
 </body>
