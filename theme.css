@@ -1,0 +1,47 @@
+/* Paleta do Trackto — derivada da logo (brand/trackto-logo-original.png).
+   Altere as cores aqui; index.html e form.html usam apenas estas variáveis.
+   Exceção: ícones SVG com stroke/fill no próprio atributo usam o valor fixo equivalente. */
+:root{
+  /* marca */
+  --lime:#E2FB39;
+  --accent:#9DFB37;
+  --neon:#26FA36;
+  --green:#03BF45;
+  --green-deep:#018E53;
+  --forest:#02573C;
+  --grad-brand:linear-gradient(110deg,#5BFA37 0%,#9DFB37 45%,#E2FB39 100%);
+
+  /* superfícies claras */
+  --bg:#F7FAF6;
+  --bg-soft:#EEF3EC;
+  --bg-mute:#F3F7F1;
+  --surface:#FFFFFF;
+  --tint:#F1FCE4;
+  --header-bg:rgba(247,250,246,0.9);
+
+  /* superfícies escuras */
+  --ink:#0A1A12;
+  --ink-grad:radial-gradient(120% 150% at 100% 0%,rgba(38,250,54,0.16) 0%,rgba(2,87,60,0.28) 36%,rgba(2,87,60,0) 70%),#0A1A12;
+  --on-dark:#F7FAF6;
+  --on-dark-mute:#BCC9BF;
+
+  /* texto */
+  --text-strong:#26352C;
+  --text:#3D4A42;
+  --text-soft:#4A584F;
+  --text-mute:#5C6960;
+  --text-faint:#6E7A72;
+  --text-fainter:#7F8A83;
+  --text-ghost:#A9B3AC;
+
+  /* linhas */
+  --line:#DDE5DA;
+  --line-2:#D3DDD0;
+  --line-3:#C5D1C2;
+  --line-accent:#CDEFA6;
+
+  /* estados */
+  --danger:#C24B3E;
+  --shadow:rgba(10,26,18,0.22);
+  --glow:rgba(3,191,69,0.5);
+}
