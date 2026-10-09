@@ -58,6 +58,16 @@
   .planFeats li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#4B4A42;line-height:1.45;}
   .planCheck{width:18px;height:18px;border-radius:999px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
   @media (prefers-reduced-motion:reduce){.planCard,.planBtn,.billOpt{transition:none;}.planCard:hover{transform:none;}}
+  .toolGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .toolCard{background:#FFFFFF;border:1px solid #E7E3D9;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:22px;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+  .toolCard:hover{transform:translateY(-3px);border-color:#D8D3C4;box-shadow:0 24px 60px -32px rgba(22,24,16,0.25);}
+  .toolId{display:flex;align-items:center;gap:12px;min-width:0;}
+  .toolMark{width:38px;height:38px;border-radius:10px;background:#FFFFFF;border:1px solid #E2DED0;overflow:hidden;flex-shrink:0;}
+  .toolMark img{display:block;width:100%;height:100%;object-fit:contain;}
+  .toolCost{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .toolChip{background:#F0EEE5;border:1px solid #E2DED0;border-radius:999px;padding:4px 10px;font-size:12px;color:#5A5848;white-space:nowrap;}
+  .toolTotal{margin-top:16px;background:#161810;color:#FAF9F6;border-radius:16px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  @media (prefers-reduced-motion:reduce){.toolCard{transition:none;}.toolCard:hover{transform:none;}}
   details summary::-webkit-details-marker{display:none;}
   @media (max-width:900px){
     .heroGrid{grid-template-columns:1fr;gap:40px;}
@@ -69,11 +79,16 @@
     .calcGrid{grid-template-columns:1fr;}
     .calcStats{grid-template-columns:1fr;}
     .planGrid{grid-template-columns:1fr 1fr;}
+    .toolGrid{grid-template-columns:1fr 1fr;}
     .navlinks{gap:20px;}
   }
   @media (max-width:640px){
     .featGrid{grid-template-columns:1fr;}
     .planGrid{grid-template-columns:1fr;}
+    .toolGrid{grid-template-columns:1fr;gap:10px;}
+    .toolCard{flex-direction:row;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;}
+    .toolCost{flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+    .toolTotal{padding:24px 22px;}
     .navlinks{position:absolute;top:72px;left:0;right:0;background:#FAF9F6;flex-direction:column;align-items:flex-start;padding:20px 24px 28px;gap:18px;display:none;border-bottom:1px solid #E7E3D9;z-index:40;}
     .menu-check:checked ~ .navwrap .navlinks{display:flex;}
     .menu-btn{display:flex;}
@@ -334,7 +349,7 @@
   <section id="calculadora" style="background:#F0EEE5;">
     <div style="max-width:1180px;margin:0 auto;padding:72px 24px;">
       <div style="max-width:620px;margin-bottom:40px;">
-        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Quanto a sua agência recupera com o Trackto.</h2>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Quanto a sua agência economiza com o Trackto.</h2>
         <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Ajuste pros números da sua operação e veja o ganho de tempo e a redução de gasto com ferramentas.</p>
       </div>
 
@@ -400,6 +415,29 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- FERRAMENTAS SEPARADAS -->
+  <section id="ferramentas" style="max-width:1180px;margin:0 auto;padding:72px 24px;">
+    <div style="max-width:640px;margin-bottom:40px;">
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,3.2vw,36px);letter-spacing:-0.01em;margin:0 0 14px;">Cada ferramenta parece barata. A soma não é.</h2>
+      <p style="font-size:16px;color:#4B4A42;line-height:1.6;margin:0;">Cada assinatura cobra à parte, muitas delas por usuário, e a fatura cresce junto com a equipe. O Trackto reúne tarefas, CRM, comunicação e relatórios em um sistema só — menos assinaturas na conta do mês.</p>
+    </div>
+
+    <div class="toolGrid" id="toolGrid"></div>
+
+    <div class="toolTotal">
+      <div>
+        <p style="font-size:13px;color:#C9C6B8;margin:0 0 6px;">Somando as <span id="toolCount">0</span> assinaturas, em valores estimados</p>
+        <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,38px);letter-spacing:-0.02em;color:var(--accent);margin:0;">≈ R$ <span id="toolTotalOut">0</span><span style="font-family:'IBM Plex Sans',sans-serif;font-weight:400;font-size:15px;letter-spacing:0;color:#C9C6B8;"> /mês</span></p>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <p style="font-size:15px;color:#FAF9F6;margin:0;max-width:300px;line-height:1.5;">O Trackto centraliza tarefas, CRM, comunicação e relatórios em um sistema só, com uma cobrança só.</p>
+        <a href="form.html" style="background:var(--accent);color:#161810;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;white-space:nowrap;">Quero centralizar</a>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#9A978A;margin:16px 0 0;" id="toolNote"></p>
   </section>
 
   <!-- DEPOIMENTOS -->
@@ -663,6 +701,42 @@
     });
   });
   renderPlans('mensal');
+
+  // ===== FERRAMENTAS SEPARADAS =====
+  // Preços de tabela consultados nos sites oficiais em 08/10/2026 (plano pago de entrada).
+  // unit: preço por usuário/mês (ou por conta, quando qty = 1). currency: 'BRL' ou 'USD' (convertido por USD_BRL).
+  // official: true só quando o valor em R$ foi confirmado no site oficial; false exibe "≈" (estimativa).
+  var USD_BRL = 5.02; // câmbio de 08/10/2026 — atualize ao revisar os preços
+  var TOOLS = [
+    { name: 'Slack',      logo: 'logos/slack.png',      category: 'Comunicação',          plan: 'Pro',       currency: 'USD', unit: 5.25,   qty: 5, billing: '5 usuários',  official: false },
+    { name: 'ClickUp',    logo: 'logos/clickup.png',    category: 'Gestão de tarefas',    plan: 'Unlimited', currency: 'USD', unit: 10,     qty: 5, billing: '5 usuários',  official: false },
+    { name: 'Monday.com', logo: 'logos/monday.png',     category: 'Gestão de projetos',   plan: 'Basic',     currency: 'BRL', unit: 50,     qty: 5, billing: '5 usuários',  official: true },
+    { name: 'Conta Azul', logo: 'logos/conta-azul.png', category: 'Financeiro',           plan: 'Essencial', currency: 'BRL', unit: 179.90, qty: 1, billing: '1 usuário',   official: false },
+    { name: 'Proposify',  logo: 'logos/proposify.png',  category: 'Propostas comerciais', plan: 'Build',     currency: 'USD', unit: 49,     qty: 1, billing: '1 usuário',   official: false },
+    { name: 'Trello',     logo: 'logos/trello.png',     category: 'Quadros de campanha',  plan: 'Standard',  currency: 'USD', unit: 6,      qty: 5, billing: '5 usuários',  official: false },
+    { name: 'Notion',     logo: 'logos/notion.png',     category: 'Documentação',         plan: 'Plus',      currency: 'USD', unit: 10,     qty: 5, billing: '5 usuários',  official: false },
+    { name: 'Bitly',      logo: 'logos/bitly.png',      category: 'Links e rastreamento', plan: 'Core',      currency: 'USD', unit: 10,     qty: 1, billing: 'Plano fixo',  official: false }
+  ];
+  var TOOLS_NOTE = 'Preços de tabela dos planos pagos de entrada, consultados nos sites oficiais em outubro de 2026. Valores com ≈ são estimativas: preços em dólar convertidos a R$ ' + USD_BRL.toFixed(2).replace('.', ',') + ' ou sem ciclo de cobrança confirmado; impostos e câmbio alteram o valor final. A lista ilustra uma pilha comum de ferramentas — o Trackto não substitui todas elas. Marcas e logotipos pertencem aos seus respectivos donos.';
+
+  function toolMonthly(tool){ return tool.unit * tool.qty * (tool.currency === 'USD' ? USD_BRL : 1); }
+
+  document.getElementById('toolGrid').innerHTML = TOOLS.map(function(tool){
+    return '<article class="toolCard">' +
+      '<div class="toolId">' +
+        '<span class="toolMark"><img src="' + tool.logo + '" alt="" width="38" height="38" loading="lazy"></span>' +
+        '<div style="min-width:0;"><p style="font-size:15px;font-weight:600;margin:0;">' + tool.name + '</p>' +
+        '<p style="font-size:13px;color:#8C897A;margin:2px 0 0;">' + tool.category + '</p></div>' +
+      '</div>' +
+      '<div class="toolCost">' +
+        '<p style="margin:0;white-space:nowrap;" title="Plano ' + tool.plan + (tool.official ? '' : ' — valor estimado') + '"><span style="font-family:\'Space Grotesk\',sans-serif;font-weight:700;font-size:24px;letter-spacing:-0.01em;">' + (tool.official ? '' : '≈ ') + 'R$ ' + fmt(toolMonthly(tool)) + '</span><span style="font-size:13px;color:#8C897A;"> /mês</span></p>' +
+        (tool.billing ? '<span class="toolChip">' + tool.billing + '</span>' : '') +
+      '</div>' +
+    '</article>';
+  }).join('');
+  document.getElementById('toolCount').textContent = TOOLS.length;
+  document.getElementById('toolTotalOut').textContent = fmt(TOOLS.reduce(function(sum, tool){ return sum + toolMonthly(tool); }, 0));
+  document.getElementById('toolNote').textContent = TOOLS_NOTE;
 </script>
 
 </body>
